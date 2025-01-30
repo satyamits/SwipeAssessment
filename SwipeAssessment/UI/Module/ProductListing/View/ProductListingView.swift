@@ -77,6 +77,9 @@ struct ProductListView: View {
                                 }
                             }
                         }
+                        .refreshable {
+                            await refreshData()
+                        }
                     }
 
                     
@@ -122,9 +125,9 @@ struct ProductListView: View {
             }
         
             .onAppear {
-                viewModel.managedObjectContext = managedObjectContext
-                viewModel.fetchProductsFromCoreData()
-                viewModel.fetchProductsFromAPI()
+                self.viewModel.managedObjectContext = managedObjectContext
+                self.viewModel.fetchProductsFromCoreData()
+                self.viewModel.fetchProductsFromAPI()
             }
             .background(Color.themeColor)
         }
@@ -138,6 +141,13 @@ struct ProductListView: View {
             .background(Color.themeColor.ignoresSafeArea(.all))
         }
         
+    }
+    
+    private func refreshData() async {
+        await MainActor.run {
+            self.viewModel.fetchProductsFromCoreData()
+            self.viewModel.fetchProductsFromAPI()
+        }
     }
 }
 
