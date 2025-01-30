@@ -121,9 +121,8 @@ extension UrlSessionManagers {
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         request.httpBody = body
         
-        // Debug: Print the request body (for development only - remove in production)
         if let bodyString = String(data: body, encoding: .utf8) {
-            print("Request Body: \(bodyString)") // REMOVE in production
+            print("Request Body: \(bodyString)")
         }
         
         // Create URLSession task to send data

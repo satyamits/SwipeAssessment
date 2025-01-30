@@ -8,11 +8,9 @@
 
 import SwiftUI
 import Combine
-import SwiftData
+import CoreData
 
 class ProductListingViewModel: ObservableObject {
-    
-    @Environment(\.modelContext) private var modelContext: ModelContext
     
     @Published var filteredProducts: [ProductListingResponse] = []
     @Published var products: [ProductListingResponse] = []
@@ -55,12 +53,12 @@ class ProductListingViewModel: ObservableObject {
                     case .failure(let error):
                         print("❌ Error fetching products: \(error.localizedDescription)")
                     }
-                    self.isLoading = false // Set loading to false after API call (success or failure)
+                    self.isLoading = false
 
                 }
             }
         }
-    
+    // MARK: Managed Context
     private func saveProductsToCoreData(_ products: [ProductListingResponse]) {
             products.forEach { product in
                 let productEntity = ProductList(context: managedObjectContext)
@@ -76,7 +74,6 @@ class ProductListingViewModel: ObservableObject {
                 try managedObjectContext.save()
             } catch {
                 print("Error saving to Core Data: \(error)")
-                // Handle the error appropriately (e.g., show an alert to the user).
             }
         }
 
@@ -119,85 +116,3 @@ extension ProductList {
         )
     }
 }
-
-import SwiftUI
-import CoreData
-import Combine
-
-//class ProductListingViewModel: ObservableObject {
-//    
-//    @Published var filteredProducts: [ProductList] = []
-//    @Published var searchQuery: String = ""
-//    @Published var isLoading = false
-//    @Published var favorites: Set<UUID> = []
-//    
-//    private var cancellables = Set<AnyCancellable>()
-//    private let context = CoreDataManager.shared.context
-//    
-//    func fetchProducts() {
-//        self.isLoading = true
-//        
-//        // 1️⃣ Fetch from Core Data
-//        let request: NSFetchRequest<ProductList> = ProductList.fetchRequest()
-//        do {
-//            let storedProducts = try context.fetch(request)
-//            if !storedProducts.isEmpty {
-//                self.filteredProducts = storedProducts
-//                self.isLoading = false
-//                return
-//            }
-//        } catch {
-//            print("❌ Error fetching from Core Data: \(error)")
-//        }
-//        
-//        // 2️⃣ Fetch from API if Core Data is empty
-//        UrlSessionManagers.shared.fetchProductListing { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let productListing):
-//                    self.saveProductsToCoreData(products: productListing)
-//                case .failure(let error):
-//                    print("❌ API Fetch Error: \(error.localizedDescription)")
-//                }
-//                self.isLoading = false
-//            }
-//        }
-//    }
-//
-//    private func saveProductsToCoreData(products: [ProductListingResponse]) {
-//        for product in products {
-//            let entity = ProductList(context: context)
-//            entity.id = product.id ?? UUID()
-//            entity.productName = product.productName
-//            entity.productType = product.productType
-//            entity.price = product.price ?? 0.0
-//            entity.tax = product.tax ?? 0.0
-//            entity.image = product.image
-//            
-//            print("✅ Saving Product: \(entity.productName ?? "Unknown")")
-//        }
-//
-//        CoreDataManager.shared.saveContext()
-//        
-//        // 3️⃣ Fetch from Core Data after saving
-//        let request: NSFetchRequest<ProductList> = ProductList.fetchRequest()
-//        if let storedProducts = try? context.fetch(request) {
-//            self.filteredProducts = storedProducts
-//        }
-//    }
-//    
-//    func filterProducts() {
-//        let request: NSFetchRequest<ProductList> = ProductList.fetchRequest()
-//        do {
-//            let allProducts = try context.fetch(request)
-//            let filtered = searchQuery.isEmpty ? allProducts : allProducts.filter { product in
-//                product.productName?.lowercased().contains(searchQuery.lowercased()) ?? false
-//            }
-//            
-//            // Sort: Favorited products should appear at the top
-//            filteredProducts = filtered.sorted { favorites.contains($0.id!) && !favorites.contains($1.id!) }
-//        } catch {
-//            print("❌ Error filtering products: \(error)")
-//        }
-//    }
-//}

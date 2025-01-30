@@ -8,7 +8,6 @@
 
 public struct APIConfig {
     
-    
     public struct APIUrl {
         
         #if DEBUG

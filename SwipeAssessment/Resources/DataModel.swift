@@ -42,7 +42,6 @@ public struct UserDefault<T> {
         }
     }
 }
-
 extension UserDefault where T: ExpressibleByNilLiteral {
     init(_ key: String) {
         self.init(key, nil)

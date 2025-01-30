@@ -82,23 +82,23 @@ struct ProductListView: View {
                     
                 }
                 .background(Color.themeColor)
-                VStack {
-                    Spacer()
-                    Button {
-                        withAnimation(.linear(duration: 2)) {
-                            self.showAddProductView = true
-                        }
-                    } label: {
-                        Text("Add New Product")
-                            .font(.secondary(.h22))
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.themeGreenMedium)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding()
-                    }
-                }
+//                VStack {
+//                    Spacer()
+//                    Button {
+//                        withAnimation(.linear(duration: 2)) {
+//                            self.showAddProductView = true
+//                        }
+//                    } label: {
+//                        Text("Add New Product")
+//                            .font(.secondary(.h22))
+//                            .frame(maxWidth: .infinity)
+//                            .padding()
+//                            .background(Color.themeGreenMedium)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                            .padding()
+//                    }
+//                }
                 if self.showAddProductSucessView {
                     PopupView(product: self.popupDetails) {
                         withAnimation {

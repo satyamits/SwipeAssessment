@@ -42,7 +42,7 @@ enum HTTPMethod: String {
 import Foundation
 
 extension Data {
-    // The boundary string for multipart form data (only generate once)
+    
     static func boundary() -> String {
         return "Boundary-\(UUID().uuidString)"
     }

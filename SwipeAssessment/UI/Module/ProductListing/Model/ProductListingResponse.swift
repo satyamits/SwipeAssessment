@@ -1,5 +1,5 @@
 //
-//  ProductListing.swift
+//  ProductListingResponse.swift
 //  SwipeAssignment
 //
 //  Created by Satyam Singh on 29/01/25.
